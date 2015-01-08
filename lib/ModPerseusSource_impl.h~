@@ -1,0 +1,80 @@
+/* -*- c++ -*- */
+/* 
+ * Copyright 2015 <+YOU OR YOUR COMPANY+>.
+ * 
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ * 
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this software; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street,
+ * Boston, MA 02110-1301, USA.
+ */
+
+#ifndef INCLUDED_PERSEUSAGAIN_MODPERSEUSSOURCE_IMPL_H
+#define INCLUDED_PERSEUSAGAIN_MODPERSEUSSOURCE_IMPL_H
+
+#include <perseusagain/ModPerseusSource.h>
+#include <gnuradio/buffer.h>
+#include <perseus-in.h>
+#include <perseus-sdr.h>
+#include "Sema.h"
+
+
+namespace gr {
+  namespace perseusagain {
+
+   class ModPerseusSource_impl : public ModPerseusSource
+    {
+     private:
+        // Nothing to declare in this block.
+        // Predefined Variables 
+        // ==========================================
+        int                d_sampling_rate;
+        int                d_central_frequency;
+        int                d_attenuation_db;
+        bool               d_adc_dither;
+        bool               d_preamp;
+        bool               d_frontend_filters;
+
+        //Variables needed for perseus
+        //============================================
+        perseus_descr      *pd;
+
+        //Auxiliary methods e
+        //========================================
+        void bail(const char *msg, int err) throw (std::runtime_error);
+        
+        //Variables as flags 
+        //=============================================
+        int                d_started;
+        Semaphore          d_semaphore;
+
+        //Buffer Variables
+        buffer_sptr        d_writer;
+        buffer_reader_sptr d_reader;
+
+        static int callbackPerseus (void *buf, int buf_size, void *extra);
+
+     public:
+        ModPerseusSource_impl(int sampling_rate, int central_frequency, int attenuation_db, bool adc_dither, bool preamp, bool frontend_filters);
+        ~ModPerseusSource_impl();
+
+      // Where all the action really happens
+        int work(int noutput_items,
+	        gr_vector_const_void_star &input_items,
+	        gr_vector_void_star &output_items);
+    };
+
+  } // namespace perseusagain
+} // namespace gr
+
+#endif /* INCLUDED_PERSEUSAGAIN_MODPERSEUSSOURCE_IMPL_H */
+

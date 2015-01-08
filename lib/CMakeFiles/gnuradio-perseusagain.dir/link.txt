@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -O3 -DNDEBUG   -shared -Wl,-soname,libgnuradio-perseusagain.so -o libgnuradio-perseusagain.so CMakeFiles/gnuradio-perseusagain.dir/ModPerseusSource_impl.cc.o -L/usr/local/lib/libperseus-sdr.so -lboost_filesystem-mt -lboost_system-mt /usr/local/lib/libgnuradio-runtime.so -Wl,-rpath,/usr/local/lib/libperseus-sdr.so:/usr/local/lib: 
