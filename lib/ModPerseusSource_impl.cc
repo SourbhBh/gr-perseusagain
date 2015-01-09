@@ -112,6 +112,8 @@ namespace gr {
         d_adc_dither =           adc_dither;
         d_preamp =               preamp;
         d_frontend_filters =     frontend_filters;
+        d_writer =               gr::make_buffer(1024,sizeof(gr_complex),gr::block_sptr());
+       d_reader =                gr::buffer_add_reader(d_writer,0,gr::block_sptr()); 
 
 //Opening Perseus...
 //======================================================================================================================================
